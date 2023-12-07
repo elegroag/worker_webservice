@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+define('SEPARATOR', '/');
+define('FCPATH', __DIR__ . SEPARATOR);
+
+require_once FCPATH ."lib/PHPUnit/PHPUnitException.php";
+require_once FCPATH ."lib/PHPUnit/AssertionFailed.php";
+require_once FCPATH ."lib/PHPUnit/PHPUnit.php";
+
+chdir(FCPATH);
+
+if (count($argv) < 2 && is_null($argv[1])) {
+    printf("\033[91m" . "\nLa clase no es valida para el Test {$clase} " . "\n\033[0m");
+    exit;
+}
+
+if (is_int($suppress = array_search('--test', $_SERVER['argv'], true))) {
+
+    $clase = @$argv[2];
+    if (is_null($clase)) {
+        printf("\033[91m" . "\nLa clase no es valida para el Test {$clase} " . "\n\033[0m");
+        exit;
+    }
+
+    printf("\033[96m\TEST PHPUNit \nClase {$clase}Test\n\033[0m");
+
+    if (strpos($clase, "/") !== false) {
+        $filepath = __DIR__ . SEPARATOR . "Test" . SEPARATOR . $clase . SEPARATOR . $clase . "Test.php";
+        if (file_exists($filepath) == false) {
+            echo "\n";
+            printf("\033[91m" . "El archivo test no está disponible. {$filepath}" . "\033[0m");
+            echo "\n";
+            exit;
+        }
+        include_once $filepath;
+        $exp = explode("/", $clase);
+        $clase = $exp[1];
+    } else {
+        //sin directorio
+        $filepath = __DIR__ . SEPARATOR . "Test" . SEPARATOR . $clase . "Test.php";
+        if (file_exists($filepath) == false) {
+            echo "\n";
+            printf("\033[91m" . "El archivo test no está disponible." . "\033[0m");
+            echo "\n";
+            exit;
+        }
+        include_once $filepath;
+    }
+
+    if (is_int($suppress = array_search('--filter', $_SERVER['argv'], true))) {
+        if (isset($argv[4])) {
+
+            $metodo = @$argv[4];
+
+            printf("\033[92m" . 'INI TEST FILTER' . "\033[0m");
+            echo "\n";
+
+            PHPUnit::testClass($clase . "Test", $metodo);
+            exit;
+        } else {
+            echo "\n\n";
+            printf("\033[91m ERROR EL --filter Requiere de un metodo a procesar \033[0m");
+            echo "\n\n";
+        }
+    } else {
+        printf("\033[92m" . 'INI TEST FULL' . "\033[0m");
+        PHPUnit::testClass($clase . "Test");
+    }
+    exit;
+}
