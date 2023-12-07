@@ -14,7 +14,7 @@ if ($contentType == "application/json") {
 
 ini_set("upload_max_filesize", "6M");
 ini_set('display_errors', true);
-error_reporting(E_ERROR);
+error_reporting(E_ALL);
 setlocale(LC_ALL, "es_CO");
 date_default_timezone_set('America/Bogota');
 

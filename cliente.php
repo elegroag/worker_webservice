@@ -7,13 +7,12 @@ require_once FCPATH . 'lib/nusoap.php';
 
 $soapclient = new nusoap_client("http://".LocalEnv::$server_name.':'.LocalEnv::$server_port."/WebServiceNuevo/ConsultarAfiliado.php?wsdl", true);
 
-$error = $soapclient->getError();
-
-if ($error) {
-    echo "<h2>Constructor error</h2><pre>" . $error . "</pre>";
-}
-
 try {
+    $error = $soapclient->getError();
+    if ($error) {
+        throw new Exception("<h2>Constructor error</h2><pre>" . $error . "</pre>", 404);
+    }
+    
     $method = $_SERVER['REQUEST_METHOD'];
     if($method != "POST") {
         throw new Exception("No dispone de permisos para acceder por medio del metodo solicitado http", 405);
@@ -24,19 +23,23 @@ try {
             $salida = $soapclient->call(
             "ConsultarAfiliado",
             array(
-                "TipoIdentificacion" => strval($_POST['TipoIdentificacion']),
-                "NumeroIdentificacion"=> strval($_POST['NumeroIdentificacion']),
-                "CodigoCaja"=> '13',
-                "TipoAfiliado"=> strval($_POST['TipoAfiliado'])
+                "TipoIdentificacion" => $_POST['TipoIdentificacion'],
+                "NumeroIdentificacion"=> $_POST['NumeroIdentificacion'],
+                "CodigoCaja"=> "13",
+                "TipoAfiliado"=> $_POST['TipoAfiliado']
             ));  
         } else {
-            throw new Exception('Error se requiere de los parametros TipoIdentificacion:char(2), NumeroIdentificacion:char(18), CodigoCaja:char(2), TipoAfiliado:char(1)', 406);
+            throw new Exception('Error se requiere de los parametros TipoIdentificacion:char(3), NumeroIdentificacion:char(18), CodigoCaja:char(2), TipoAfiliado:char(1)', 406);
         }
     } else {
         throw new Exception("Error se requiere de los parametros metodo POST", 406);
     }
+    $error = $soapclient->getError();
+    if ($error) {
+        throw new Exception($error, 404);
+    }
 
-	if(count($salida) == 0){
+	if(count($salida) == 0 && $salida !== false){
 		$data = array(
 			'message' => 'Consulta realizada con éxito, no hay registros disponibles con los criterios de busqueda indicados',
 			'response' => $salida

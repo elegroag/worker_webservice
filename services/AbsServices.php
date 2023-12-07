@@ -34,8 +34,32 @@ abstract class AbsServices
             case 'PA':
                 return '6';
                 break;
+            case 'RC':
+                return '7';
+                break;
+            case 'PEP':
+                return '8';
+                break;
+            case 'CB':
+                return '9';
+                break;
+            case 'MTF':
+                return '10';
+                break;
+            case 'CD':
+                return '11';
+                break;
+            case 'ISE':
+                return '12';
+                break;
+            case 'V':
+                return '13';
+                break;
+            case 'PT':
+                return '14';
+                break;
             default:
-                return '';
+                return '1';
                 break;
         }
     }
@@ -43,22 +67,46 @@ abstract class AbsServices
     public function tipoDocumentoDetalle($tipdoc){
         switch ($tipdoc) {
             case '1':
-                return 'CC';
+                return 'CEDULA CIUDADANIA';
                 break;
             case '2':
-                return 'TI';
+                return 'TARJETA IDENTIDAD';
                 break;
             case '4':
-                return 'CE';
+                return 'CEDULA EXTRANJERIA';
                 break;
             case '5':
                 return 'NUIP';
                 break;
             case '6':
-                return 'PA';
+                return 'PASAPORTE';
+                break;
+            case '7':
+                return 'REGISTRO CIVIL';
+                break;
+            case '8':
+                return 'PERMISO ESPECIAL DE PERMANENCIA';
+                break;
+            case '9':
+                return 'CERTIFICADO CABILDO';
+                break;
+            case '10':
+                return 'TARJETA DE MOVILIDAD FRONTERIZA';
+                break;                
+            case '11':
+                return 'CARNET DIPLOMATICO';
+                break;
+            case '12':
+                return 'ISE';
+                break;
+            case '13':
+                return 'VISA';
+                break;
+            case '14':
+                return 'PERMISO PROTECCIÓN TEMPORAL';
                 break;
             default:
-                return 'CC';
+                return 'CEDULA';
                 break;
         }
     }

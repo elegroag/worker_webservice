@@ -4,17 +4,21 @@ define('FCPATH', __DIR__ . SEPARATOR);
 
 ini_set("upload_max_filesize", "6M");
 ini_set('display_errors', true);
-error_reporting(E_ERROR);
+
+error_reporting(E_ALL);
 setlocale(LC_ALL, "es_CO");
+
 date_default_timezone_set('America/Bogota');
 
-require_once FCPATH .'lib/nusoap.php';
-require_once FCPATH .'services/AfiliadosServices.php';
+require_once FCPATH . 'lib/LocalEnv.php';
+require_once FCPATH . 'lib/nusoap.php';
+require_once FCPATH . 'services/AfiliadosServices.php';
 
-$rawPost = strcasecmp($_SERVER['REQUEST_METHOD'], "POST") == 0 ? (isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input")) : NULL;
-
+LocalEnv::Init();
 $_SERVER['SERVER_NAME'] = LocalEnv::$server_name;
 $_SERVER['SERVER_PORT'] = LocalEnv::$server_port;
+
+$rawPost = strcasecmp($_SERVER['REQUEST_METHOD'], "POST") == 0 ? (isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input")) : NULL;
 
 $server = new soap_server;
 $server->configureWSDL('ServicioAfiliado', 'urn:ServicioAfiliado');
@@ -68,18 +72,24 @@ $server->register("ConsultarAfiliado",
 
 $server->service($rawPost);
 
-function ConsultarAfiliado($TipoIdentificacion = '', $NumeroIdentificacion = '', $TipoAfiliado, $CodigoCaja)
+function ConsultarAfiliado($TipoIdentificacion, $NumeroIdentificacion, $TipoAfiliado, $CodigoCaja)
 {
 	$afiliadosServices = new AfiliadosServices();
 	switch ($TipoAfiliado) {
 		case 'T':
 			$afiliadosServices->findTrabajador($NumeroIdentificacion, $TipoIdentificacion);
 			break;
-		case 'I':
-			break;
 		case 'B':
+			$afiliadosServices->findBeneficiario($NumeroIdentificacion, $TipoIdentificacion);
 			break;
 		case 'C':
+			$afiliadosServices->findConyuge($NumeroIdentificacion, $TipoIdentificacion);
+			break;
+		case 'I':
+			$afiliadosServices->findTrabajador($NumeroIdentificacion, $TipoIdentificacion);
+			break;
+		case 'P':
+			$afiliadosServices->findTrabajador($NumeroIdentificacion, $TipoIdentificacion);
 			break;
 		default:
 		break;
