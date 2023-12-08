@@ -133,7 +133,7 @@ class AfiliadosServices extends AbsServices
     {
         $coddoc = $this->coddocDetalleToCode($tipdoc);
         $sql = "SELECT 
-            subsi22.*, subsi23.fecafi, subsi15.codcat, subsi23.cedtra, subsi23.cedcon
+            subsi22.*, subsi23.fecafi, subsi15.codcat, subsi23.cedtra, subsi23.cedcon 
             FROM subsi22
             INNER JOIN subsi23 ON subsi23.codben = subsi22.codben
             INNER JOIN subsi15 ON subsi15.cedtra = subsi23.cedtra  
@@ -202,6 +202,40 @@ class AfiliadosServices extends AbsServices
 
                     $this->Info("T", $trabajador['codcat'], $trabajador);
                     $msubsi15->MoveNext();
+                }
+            }
+        }
+
+        if(count($cedcons) > 0)
+        {
+            foreach ($cedcons as $cedcon) 
+            {
+                if(is_null($cedcon) || $cedcon=='' || strlen($cedcon) < 5) continue;
+                $sql = "SELECT 
+                    subsi20.*, subsi21.fecafi, subsi15.codcat, subsi21.cedtra 
+                    FROM subsi20 
+                    INNER JOIN subsi21 ON subsi21.cedcon = subsi20.cedcon 
+                    INNER JOIN subsi15 ON subsi15.cedtra = subsi21.cedtra 
+                    WHERE subsi20.cedcon='{$cedcon}' LIMIT 1;";
+
+                $msubsi20 = $this->db->execute($sql);
+                while (!$msubsi20->EOF) 
+                {
+                    $conyuge = array(
+                        'cedula' => trim($msubsi20->fields["cedcon"]),
+                        'prinom' => trim($msubsi20->fields['prinom']),
+                        'segnom' => trim($msubsi20->fields['segnom']),
+                        'priape' => trim($msubsi20->fields['priape']),
+                        'segape' => trim($msubsi20->fields['segape']),
+                        'fecafi' => trim($msubsi20->fields["fecafi"]),
+                        'estado' => trim($msubsi20->fields["estado"]),
+                        'codcat' => trim($msubsi20->fields['codcat']),
+                        'coddoc' => trim($msubsi20->fields['coddoc']),
+                        'fecnac' => trim($msubsi20->fields['fecnac']),
+                    );
+        
+                    $this->Info("B", $conyuge['codcat'], $conyuge);
+                    $msubsi20->MoveNext();
                 }
             }
         }
@@ -283,6 +317,34 @@ class AfiliadosServices extends AbsServices
                 }
             }
         }
-    } 
+
+        $sql = "SELECT 
+            subsi22.*, subsi23.fecafi, subsi15.codcat, subsi23.cedtra, subsi23.cedcon 
+            FROM subsi22
+            INNER JOIN subsi23 ON subsi23.codben = subsi22.codben
+            INNER JOIN subsi15 ON subsi15.cedtra = subsi23.cedtra  
+            WHERE subsi23.cedcon='{$cedcon}';
+        ";
+
+        $msubsi22 = $this->db->execute($sql);
+        while (!$msubsi22->EOF) 
+        {
+            $beneficiario = array(
+                'cedula' => trim($msubsi22->fields["documento"]),
+                'prinom' => trim($msubsi22->fields['prinom']),
+                'segnom' => trim($msubsi22->fields['segnom']),
+                'priape' => trim($msubsi22->fields['priape']),
+                'segape' => trim($msubsi22->fields['segape']),
+                'fecafi' => trim($msubsi22->fields["fecafi"]),
+                'estado' => trim($msubsi22->fields["estado"]),
+                'codcat' => trim($msubsi22->fields['codcat']),
+                'coddoc' => trim($msubsi22->fields['coddoc']),
+                'fecnac' => trim($msubsi22->fields['fecnac']),
+            );
+
+            $this->Info("B", $beneficiario['codcat'], $beneficiario);
+            $msubsi22->MoveNext();
+        }
+    }
 
 }

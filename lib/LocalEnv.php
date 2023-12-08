@@ -10,6 +10,7 @@ class LocalEnv {
     static $secretKey;
     static $server_name;
     static $server_port;
+    static $server_private;
 
     public static function Init()
     {
@@ -36,6 +37,7 @@ class LocalEnv {
         self::$database = $__ARRS['DB_DATABASE'];
         self::$decryptionMethod = $__ARRS['decryptionMethod'];
         self::$secretKey = $__ARRS['secretKey'];
+        self::$server_private = $__ARRS['PRO_SERVER_NAME'];
         
         if($__ARRS['MODE'] == 'development'){
             self::$server_name = $__ARRS['DEV_SERVER_NAME'];

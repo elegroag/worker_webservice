@@ -1,21 +1,18 @@
 <?php
 define('SEPARATOR', '/');
 define('FCPATH', __DIR__ . SEPARATOR);
-
 require_once FCPATH . 'lib/init.php';
 require_once FCPATH . 'lib/nusoap.php';
 
-$soapclient = new nusoap_client("http://".LocalEnv::$server_name.':'.LocalEnv::$server_port."/WebServiceNuevo/ConsultarAfiliado.php?wsdl", true);
-
 try {
+    $soapclient = new nusoap_client(
+        "http://".LocalEnv::$server_private."/WebServiceNuevo/ConsultarAfiliado.php?wsdl", 
+        true
+    );
+
     $error = $soapclient->getError();
     if ($error) {
-        throw new Exception("<h2>Constructor error</h2><pre>" . $error . "</pre>", 404);
-    }
-    
-    $method = $_SERVER['REQUEST_METHOD'];
-    if($method != "POST") {
-        throw new Exception("No dispone de permisos para acceder por medio del metodo solicitado http", 405);
+        throw new Exception($error, 404);
     }
 
     if(isset($_POST)){
@@ -25,9 +22,9 @@ try {
             array(
                 "TipoIdentificacion" => $_POST['TipoIdentificacion'],
                 "NumeroIdentificacion"=> $_POST['NumeroIdentificacion'],
-                "CodigoCaja"=> "13",
+                "CodigoCaja"=> $_POST['CodigoCaja'],
                 "TipoAfiliado"=> $_POST['TipoAfiliado']
-            ));  
+            ));
         } else {
             throw new Exception('Error se requiere de los parametros TipoIdentificacion:char(3), NumeroIdentificacion:char(18), CodigoCaja:char(2), TipoAfiliado:char(1)', 406);
         }
@@ -36,7 +33,7 @@ try {
     }
     $error = $soapclient->getError();
     if ($error) {
-        throw new Exception($error, 404);
+        throw new Exception($error, 501);
     }
 
 	if(count($salida) == 0 && $salida !== false){
@@ -52,12 +49,14 @@ try {
 	}
     echo json_encode($data);
     
-} catch (Exception $err) {
+} catch (Exception $_err) {
 
     echo json_encode(array(
-        "message" => $err->getMessage(),
-        "success" =>  false
+        "message" => $_err->getMessage(),
+        "success" =>  false,
+        "line" =>  $_err->getLine(),
+        "file" =>  $_err->getFile(),
     ));
     $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');    
-    header($protocol . ' ' . $err->getCode() . ' ' . "Method Not Allowed");
+    header($protocol . ' ' . $_err->getCode() . ' ' . "Method Not Allowed");
 }

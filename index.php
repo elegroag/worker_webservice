@@ -409,12 +409,12 @@ LocalEnv::Init();
             <div class="mt-5 bg-white dark:bg-gray-600 overflow-hidden shadow sm:rounded-lg">
                 <div class="grid">
                     <div class="p-6">
-                        <div class="flex items-center">
+                        <div class="flex">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500">
                                 <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                             <div class="ml-4 text-lg leading-7 font-semibold">
-                                <div class="text-gray-900 dark:text-white">WEB SERVICE, Caja de Compensación Del Caquetá</div>
+                                <div class="text-gray-900 dark:text-white">WebService, Caja de Compensación Del Caquetá</div>
                             </div>
                         </div>
 
@@ -456,8 +456,6 @@ LocalEnv::Init();
                                                     <tr><td style="width: 25%;">T =</td><td>Trabajador Dependiente</td> </tr>
                                                     <tr><td>B =</td><td>Beneficiario </td></tr>
                                                     <tr><td>C =</td><td>Cónyuge</td></tr>
-                                                    <tr><td>I =</td><td>Independiente </td></tr>
-                                                    <tr><td>P =</td><td>Pensionado </td></tr>
                                                     <tr><td></td><td>Máximo 1 caracter</td> </tr>
                                                 </table>
                                                 <hr style="border:1px solid #ddd"/>
@@ -486,7 +484,12 @@ LocalEnv::Init();
                                     </tbody>
                                 </table>
                                 <br/>
-                                <p>Ejemplo del Request:</p>
+
+                                <h3>Servicio Cliente REST</h3>
+                                <p>Ejemplo del Request usando el<br/>
+                                    URL = http://<?=LocalEnv::$server_name?>:<?=LocalEnv::$server_port?>/WebServiceNuevo/cliente.php<br/>
+                                    METHOD = POST
+                                </p>
                                 <div style="background-color: #333; border-radius:10px; padding:5px 20px">
                                     <code style='color:#ff985deb; font-weight: bold; font-size:1.05rem;'>
                                         {<br>
@@ -498,11 +501,41 @@ LocalEnv::Init();
                                     </code>
                                 </div>
                                 <br/>
+                                <p>Ejemplo uso de CURL usando el servicio cliente:</p>
                                 <div style="background-color: #333; border-radius:10px; padding:5px 20px">
-                                    <code style='color:#fff; font-weight: 400; font-size:.75rem;'>
+                                    <code style='color:#fff; font-weight: 400; font-size:.70rem;'>
                                     curl -X POST http://<?=LocalEnv::$server_name?>:<?=LocalEnv::$server_port?>/WebServiceNuevo/cliente.php \<br> 
                                     -H 'Content-Type: application/json' \<br> 
-                                    -d '{"TipoIdentificacion":"CC","NumeroIdentificacion":"1110491951","CodigoCaja":"13","TipoAfiliado":"T"}'
+                                    -d '{"TipoIdentificacion":"CC","NumeroIdentificacion":"000000001","CodigoCaja":"13","TipoAfiliado":"T"}'
+                                    </code>
+                                </div>
+                                <br/>
+                                <hr style="border:1px solid #ddd"/>
+                                <br/>
+
+                                <h3>WebService SOAP XML</h3>
+                                <p>
+                                URL = http://<?=LocalEnv::$server_name?>:<?=LocalEnv::$server_port?>/WebServiceNuevo/ConsultarAfiliado.php?wsdl<br/>
+                                METHOD = POST <br/>
+                                HEADER = Content-Type="text/xml"
+                            </p>
+                                <div style="background-color: #333; border-radius:10px; padding:5px 20px">
+                                    <code class='brush: xml;' style='color:#3FCF2C; font-weight: 400; font-size:1rem;'>
+                                    &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;<br>
+                                    &nbsp;&lt;SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"<br>
+                                    &nbsp; &nbsp;xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"<br>
+                                    &nbsp; &nbsp;xmlns:xsd="http://www.w3.org/2001/XMLSchema"<br>
+                                    &nbsp; &nbsp;xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br>
+                                    &nbsp; &nbsp;xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="urn:ServicioAfiliado"&gt;<br>
+                                    &nbsp; &nbsp; &nbsp;&lt;SOAP-ENV:Body&gt;<br>
+                                    &nbsp; &nbsp; &nbsp; &nbsp;&lt;tns:ConsultarAfiliado xmlns:tns="urn:ServicioAfiliado"&gt;<br>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;TipoIdentificacion&gt;CC&lt;/TipoIdentificacion&gt;<br>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;NumeroIdentificacion&gt;000000001&lt;/NumeroIdentificacion&gt;<br>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;TipoAfiliado&gt;T&lt;/TipoAfiliado&gt;<br>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;CodigoCaja&gt;13&lt;/CodigoCaja&gt;<br>
+                                    &nbsp; &nbsp; &nbsp; &nbsp;&lt;/tns:ConsultarAfiliado&gt;<br>
+                                    &nbsp; &nbsp;&lt;/SOAP-ENV:Body&gt;<br>
+                                            &nbsp;&lt;/SOAP-ENV:Envelope&gt;<br>
                                     </code>
                                 </div>
                             </div>

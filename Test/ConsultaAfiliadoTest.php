@@ -9,6 +9,13 @@ class ConsultaAfiliadoTest extends PHPUnitTestCase
 
     public function testBuscarConyuge() {
         $this->dumper("Buscar conyuges");
+
+        $afiliadosServices = new AfiliadosServices();
+        $afiliadosServices->findBeneficiario(1197471778, 'RC');
+        $data = $afiliadosServices->getInfoData();
+        $this->dumper($data);
+        $this->assertTrue(is_array($data));
+
     }
 
     public function testBuscarTrabajador() {
@@ -18,4 +25,6 @@ class ConsultaAfiliadoTest extends PHPUnitTestCase
         $this->dumper($data);
         $this->assertTrue(is_array($data));
     }
+
+
 }
