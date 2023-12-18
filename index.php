@@ -414,7 +414,7 @@ LocalEnv::Init();
                                 <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                             <div class="ml-4 text-lg leading-7 font-semibold">
-                                <div class="text-gray-900 dark:text-white">WebService, Caja de Compensación Del Caquetá</div>
+                                <div class="text-gray-900 dark:text-white">Servicio De Consulta Afiliados, Caja de Compensación Del Caquetá</div>
                             </div>
                         </div>
 
@@ -490,8 +490,9 @@ LocalEnv::Init();
                                     URL = http://<?=LocalEnv::$server_name?>:<?=LocalEnv::$server_port?>/WebServiceNuevo/cliente.php<br/>
                                     METHOD = POST
                                 </p>
+                                <h3>Request Servicio Cliente REST</h3>
                                 <div style="background-color: #333; border-radius:10px; padding:5px 20px">
-                                    <code style='color:#ff985deb; font-weight: bold; font-size:1.05rem;'>
+                                    <code style='color:#ff985deb; font-weight: bold; font-size:1rem;'>
                                         {<br>
                                             &nbsp;&nbsp;&nbsp;"TipoIdentificacion":"CC",<br>
                                             &nbsp;&nbsp;&nbsp;"NumeroIdentificacion": "0000001",<br>
@@ -500,8 +501,31 @@ LocalEnv::Init();
                                         }
                                     </code>
                                 </div>
+                                <h3>Response Servicio Cliente REST</h3>
+                                <div style="background-color: #333; border-radius:10px; padding:5px 20px">
+                                    <code style='color:#ff985deb; font-weight: 400; font-size:1rem;'>
+                                    {<br>
+                                        &nbsp;&nbsp;&nbsp;"message": "Consulta realizada con éxito",<br>
+                                        &nbsp;&nbsp;&nbsp;"response": [<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"TipoIdentificacion": "CEDULA CIUDADANIA",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"NumeroIdentificacion": "00000001",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"PrimerApellido": "Primer apellido",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SegundoApellido": "Segundo  apellido",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"PrimerNombre": "Primer nombre",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SegundoNombre": "Segundo nombre",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"FechaNacimiento": "1989-12-19",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Categoria": "B",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Estado": "ACTIVO",<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"TipoAfiliado": "T"<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                        &nbsp;&nbsp;]<br>
+                                    }
+                                    </code>
+                                </div>
+
                                 <br/>
-                                <p>Ejemplo uso de CURL usando el servicio cliente:</p>
+                                <p>Ejemplo uso de CURL Versión 7.68, usando el servicio cliente:</p>
                                 <div style="background-color: #333; border-radius:10px; padding:5px 20px">
                                     <code style='color:#fff; font-weight: 400; font-size:.70rem;'>
                                     curl -X POST http://<?=LocalEnv::$server_name?>:<?=LocalEnv::$server_port?>/WebServiceNuevo/cliente.php \<br> 
@@ -515,6 +539,7 @@ LocalEnv::Init();
 
                                 <h3>WebService SOAP XML</h3>
                                 <p>
+                                El siguiente es un metodo alternativo para consulta de afiliados usando SOAP<br/>
                                 URL = http://<?=LocalEnv::$server_name?>:<?=LocalEnv::$server_port?>/WebServiceNuevo/ConsultarAfiliado.php?wsdl<br/>
                                 METHOD = POST <br/>
                                 HEADER = Content-Type="text/xml"

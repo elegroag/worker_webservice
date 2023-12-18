@@ -48,7 +48,7 @@ Ejemplo del Request usando el
 }
 ```
 
-Ejemplo uso de CURL usando el servicio cliente:
+Ejemplo uso de CURL Versión 7.68, usando el Servicio Cliente:
 ```bash
 curl -X POST -d '{"TipoIdentificacion":"CC","NumeroIdentificacion":"000000001","CodigoCaja":"13","TipoAfiliado":"T"}' \
 -H 'Content-Type: application/json' \

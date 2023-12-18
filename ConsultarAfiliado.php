@@ -16,7 +16,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 if($method == "OPTIONS") {
     die();
 }
-
+require_once FCPATH . 'lib/http_response.php';
 require_once FCPATH . 'lib/LocalEnv.php';
 require_once FCPATH . 'lib/nusoap.php';
 require_once FCPATH . 'services/AfiliadosServices.php';

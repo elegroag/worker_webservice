@@ -48,15 +48,13 @@ try {
 		);
 	}
     echo json_encode($data);
-    
+    http_response_code(200);
 } catch (Exception $_err) {
 
     echo json_encode(array(
         "message" => $_err->getMessage(),
-        "success" =>  false,
-        "line" =>  $_err->getLine(),
-        "file" =>  $_err->getFile(),
+        "success" =>  false
     ));
-    $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');    
-    header($protocol . ' ' . $_err->getCode() . ' ' . "Method Not Allowed");
+    http_response_code(201);
+    exit();
 }

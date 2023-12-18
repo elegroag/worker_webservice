@@ -11,6 +11,7 @@ header("Allow: POST");
 header("Content-type: application/json; charset=utf-8");
 
 try {
+	require_once FCPATH. 'lib/http_response.php';
 	require_once FCPATH. 'lib/LocalEnv.php';
 	require_once FCPATH. 'lib/ADOdb.php';
 	require_once FCPATH. 'lib/AntiXSS.php';
